@@ -11,10 +11,17 @@ import {
 import constants from "../../../constants";
 import images from "../../../resources/images";
 import { ProductView } from "../../../shared";
+import Data from "../../data/Data";
 
 export default function ProductsPage() {
   return (
-    <Box>
+    <Box
+      sx={(theme) => ({
+        overflowY: "auto",
+        height: "100vh",
+        paddingBottom: "200px",
+      })}
+    >
       <Grid
         container
         sx={(theme) => ({
@@ -24,8 +31,8 @@ export default function ProductsPage() {
           justifyContent: "center",
         })}
       >
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map((index) => (
-          <ProductView key={index.toString()} />
+        {Data.getProducts(30).map((product) => (
+          <ProductView info={product} key={product.id} />
         ))}
       </Grid>
     </Box>

@@ -1,13 +1,15 @@
-import { Box } from "@mui/material";
+import { Box, BoxProps } from "@mui/material";
 import React, { ReactNode } from "react";
 
 interface IProps {
   children?: ReactNode[];
   padding?: { x: number; y: number };
+  props?: BoxProps;
 }
-export default function Row({ children, padding }: IProps) {
+export default function Row({ children, padding, props }: IProps) {
   return (
     <Box
+      {...props}
       sx={(theme) => ({
         display: "flex",
         flexDirection: "row",

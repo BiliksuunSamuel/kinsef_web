@@ -1,11 +1,12 @@
-import { SxProps, Typography } from "@mui/material";
+import { SxProps, Typography, TypographyProps } from "@mui/material";
 import React from "react";
 
 interface IProps {
   text: string;
   styles?: SxProps;
+  props?: TypographyProps;
 }
-export default function SmallText({ text, styles }: IProps) {
+export default function SmallText({ text, styles, props }: IProps) {
   return (
     <Typography
       variant="body2"
@@ -18,6 +19,7 @@ export default function SmallText({ text, styles }: IProps) {
           fontSize: theme.spacing(1.5),
         },
       })}
+      {...props}
     >
       {text}
     </Typography>

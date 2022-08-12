@@ -1,15 +1,26 @@
 import { ShoppingBasketOutlined } from "@mui/icons-material";
-import { AppBar, Badge, Box, Container, Toolbar } from "@mui/material";
-import React, { useEffect } from "react";
+import { AppBar, Badge, Box, Container, Divider, Toolbar } from "@mui/material";
+import React, { MouseEvent, useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
+import { CustomInput, ProductCategoryLabel } from "../../../components";
 import appColors from "../../../constants/appColors";
 import images from "../../../resources/images";
-import { QuickAccessMenu } from "../../../shared";
-import { Navbar } from "../../../views";
+import { AccountMenu, QuickAccessMenu, MobileMenu } from "../../../shared";
+import { Navbar, SideCategoryView } from "../../../views";
+import Data from "../../data/Data";
 
 export default function HomePage() {
   const navigation = useNavigate();
+  const data = new Data();
+  const [accountMenu, setAccountMenu] = useState<HTMLElement | null>(null);
+  const [mobileMenu, setMobileMenu] = useState<HTMLElement | null>(null);
+  function handleMobileMenu(event: MouseEvent<HTMLButtonElement>) {
+    setMobileMenu(event.currentTarget);
+  }
 
+  function handleAccountMenu(event: MouseEvent<HTMLButtonElement>) {
+    setAccountMenu(event.currentTarget);
+  }
   useEffect(() => {
     navigation("");
   }, []);
@@ -17,54 +28,53 @@ export default function HomePage() {
     <Box
       sx={(theme) => ({
         width: "100%",
-        height: "100vh",
+        display: "flex",
+        flexDirection: "row",
         alignItems: "center",
+        justifyContent: "flex-start",
+        height: "100vh",
+        overflow: "hidden",
       })}
     >
-      <Navbar />
+      <AccountMenu
+        anchorEl={accountMenu}
+        handleClose={() => setAccountMenu(null)}
+      />
+      <SideCategoryView />
       <Box
         sx={(theme) => ({
-          marginTop: "50px",
-          background: "#f0f0f0",
+          height: "100vh",
+          flex: 1,
         })}
       >
+        <Navbar
+          handleAccountMenu={handleAccountMenu}
+          handleMobileMenu={handleMobileMenu}
+        />
         <Box
           sx={(theme) => ({
-            height: 400,
-            backgroundColor: appColors.primary,
-            clipPath: " ellipse(84% 100% at 41.16% 0%)",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundAttachment: "fixed",
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-            [theme.breakpoints.down("sm")]: {
-              height: "45vh",
-            },
-            overflow: "hidden",
-            padding: theme.spacing(2),
+            marginTop: "50px",
           })}
         >
           <Box
             sx={(theme) => ({
-              height: "100%",
-              width: 400,
-              [theme.breakpoints.down("sm")]: {
-                width: "100%",
-                height: "100%",
-              },
-              alignSelf: "center",
-              borderRadius: "100%",
-              overflow: "hidden",
+              padding: theme.spacing(1),
+              width: "100%",
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "flex-end",
+              boxShadow: theme.shadows[1],
+              zIndex: 2019,
             })}
           >
-            <img src={images.shoe1} />
+            <CustomInput
+              props={{ variant: "standard", placeholder: "search.." }}
+              label=""
+            />
           </Box>
+          <Outlet />
         </Box>
-        <QuickAccessMenu />
-        <Outlet />
       </Box>
     </Box>
   );

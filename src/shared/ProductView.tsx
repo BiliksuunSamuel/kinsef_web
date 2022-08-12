@@ -1,11 +1,18 @@
-import { AddShoppingCartOutlined } from "@mui/icons-material";
+import { AddShoppingCartOutlined, ReadMoreOutlined } from "@mui/icons-material";
 import { Box, Grid, IconButton } from "@mui/material";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { BigText, Expanded, Row, SizedBox, SmallText } from "../components";
 import constants from "../constants";
+import ProductModel from "../model/ProductModel";
 import images from "../resources/images";
+import Utils from "../utilities/Utils";
 
-export default function ProductView() {
+interface IProps {
+  info: ProductModel;
+}
+export default function ProductView({ info }: IProps) {
+  const navigation = useNavigate();
   return (
     <Grid
       sx={(theme) => ({
@@ -16,7 +23,7 @@ export default function ProductView() {
         height: 200,
       })}
       item
-      sm={4}
+      sm={5}
       xs={5}
       md={3}
       lg={2}
@@ -30,8 +37,19 @@ export default function ProductView() {
           borderRadius: theme.spacing(0.5),
         })}
       >
-        <img src={images.shoe4} alt="shoe" />
+        <img src={info.image} alt="shoe" />
       </Box>
+      <IconButton
+        sx={(theme) => ({
+          position: "absolute",
+          top: 5,
+          right: 10,
+          background: "#f5f5f5",
+        })}
+        size="small"
+      >
+        <AddShoppingCartOutlined fontSize="small" />
+      </IconButton>
       <Box
         sx={(theme) => ({
           width: "90%",
@@ -47,12 +65,30 @@ export default function ProductView() {
           alignSelf: "center",
         })}
       >
-        <BigText text="Product Name" styles={{ overflow: "hidden" }} />
+        <BigText
+          text={info.name}
+          styles={{ overflow: "hidden" }}
+          props={{
+            lineHeight: "20px",
+            sx: (theme) => ({
+              width: "100%",
+              overflow: "hidden",
+              textAlign: "left",
+              flex: 1,
+              fontSize: theme.spacing(1.85),
+            }),
+          }}
+        />
         <SizedBox height={-0.25} />
         <Row
           children={[
             <SmallText
-              text={`${constants.currency}200`}
+              props={{
+                sx: (theme) => ({
+                  fontSize: theme.spacing(1.5),
+                }),
+              }}
+              text={info.cost}
               styles={{ fontWeight: "bold" }}
             />,
             <SizedBox width={0.5} />,
@@ -64,8 +100,12 @@ export default function ProductView() {
               }}
             />,
             <Expanded />,
-            <IconButton size="small">
-              <AddShoppingCartOutlined fontSize="small" />
+            <SizedBox width={0.25} />,
+            <IconButton
+              onClick={() => navigation("/product/" + Utils.generateId())}
+              size="small"
+            >
+              <ReadMoreOutlined fontSize="small" />
             </IconButton>,
           ]}
         />
